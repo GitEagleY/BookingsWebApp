@@ -1,0 +1,23 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+<div class ="container">
+<div class = "row">
+<div class= "col">
+    <h1>This is home page</h1>
+</p>
+from template:{{index .StringMap "test"}}
+</p>
+<h3>
+    ur ip: {{index .StringMap "remote_IP"}}
+</h3>
+</div>
+</div>
+</div>
+
+
+{{end}}
+
+
+
