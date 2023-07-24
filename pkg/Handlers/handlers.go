@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	render "github.com/GitEagleY/BookingsWebApp/pkg/Render"
 	"github.com/GitEagleY/BookingsWebApp/pkg/config"
-	"github.com/GitEagleY/BookingsWebApp/pkg/models"
 )
 
 type Repository struct { //defined Repository structure
@@ -24,7 +22,7 @@ func NewHandlers(r *Repository) { //need for taking here repo to work with
 	Repo = r
 }
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	TestingStringMap := make(map[string]string) //creating testing map of string
+	/*TestingStringMap := make(map[string]string) //creating testing map of string
 	TestingStringMap["test"] = "hello"          //adding new string to just created map
 
 	remoteIpData := r.RemoteAddr                                                           //taking user ip from session
@@ -36,5 +34,30 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{
 		StringMap: TestingStringMap, //rendering test sting map
 	})
-
+	*/
+	render.RenderTemplate(w, "home.page.tmpl", nil)
+}
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "about.page.tmpl", nil)
+}
+func (m *Repository) Book_now(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "book_now.page.tmpl", nil)
+}
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "contact.page.tmpl", nil)
+}
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "login.page.tmpl", nil)
+}
+func (m *Repository) Make_reservation(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "make_reservation.page.tmpl", nil)
+}
+func (m *Repository) Quarters(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "quarters.page.tmpl", nil)
+}
+func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "register.page.tmpl", nil)
+}
+func (m *Repository) Suite(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "suite.page.tmpl", nil)
 }

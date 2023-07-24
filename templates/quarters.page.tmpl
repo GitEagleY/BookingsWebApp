@@ -1,0 +1,47 @@
+{{define "BG"}}
+<style>
+body {
+background-image: url("/static/images/qbg.jpg");
+}
+</style>
+{{end}}
+{{define "content"}}
+  
+
+    <!-- Quarters Section -->
+    <div class="container mt-5">
+        <h1>Quarters</h1>
+        <p>
+            Our cozy quarters are perfect for solo travelers or couples looking for a relaxing retreat. Enjoy the
+            breathtaking views of the ocean from your window and experience the ultimate comfort during your stay with
+            us.
+        </p>
+        <p>
+            Each quarter is equipped with modern amenities and designed to create a soothing ambiance for a peaceful
+            escape. Unwind and rejuvenate in our charming quarters as you indulge in the serenity of the ocean breeze.
+        </p>
+        <p>
+            Book your stay in our quarters and make your visit to RelaxB&B truly memorable.
+        </p>
+    </div>
+        <div class="row">
+        
+            <div class="col text-center">
+        
+                <a id="check-availability-button" href="/make-reservation-gq" class="btn btn-success">Check Availability</a>
+        
+            </div>
+        </div>
+    <!-- Footer -->
+    <footer class="my-footer fixed-bottom bg-dark text-white text-center py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col">left</div>
+                <div class="col">center</div>
+                <div class="col">right</div>
+            </div>
+        </div>
+    </footer>
+
+{{end}}
+{{template "base" .}}

@@ -1,23 +1,35 @@
-{{template "base" .}}
-
+{{define "BG"}}
+    <style>
+body {
+background-image: url("/static/images/bg1.jpg");
+}
+</style>
+{{end}}
 {{define "content"}}
+   
 
-<div class ="container">
-<div class = "row">
-<div class= "col">
-    <h1>This is home page</h1>
-</p>
-from template:{{index .StringMap "test"}}
-</p>
-<h3>
-    ur ip: {{index .StringMap "remote_IP"}}
-</h3>
-</div>
-</div>
-</div>
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Relax Bed and Breakfast</h1>
+        <p class="lead">
+            Escape to a coastal retreat of relaxation and fun. Our budget-friendly bed and breakfast offers a chill
+            atmosphere, perfect for unwinding and enjoying the company of others. Experience the serenity of the
+            shoreline and create cherished memories with like-minded travelers. Book your coastal escape now!
+        </p>
+        <a href="/make_reservation" class="btn btn-success">Make Reservation Now</a>
+    </div>
 
+    <footer class="my-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">left</div>
+                <div class="col text-center">center</div>
+                <div class="col text-center">right</div>
+            </div>
+        </div>
+    </footer>
 
 {{end}}
 
 
 
+{{template "base" .}}
