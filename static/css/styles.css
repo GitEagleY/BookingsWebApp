@@ -105,7 +105,20 @@ form {
     padding: 1em;
     color: white;
     font-size: 80%;
-    position: fixed;
+    /* Position is removed from the first block to give higher priority to the second block */
+    /* position: fixed;
     width: 100%;
-    bottom: 0;
+    bottom: 0; */
+}
+
+.room-image {
+    max-width: 50%;
+}
+
+.notie-container {
+    box-shadow: none;
+}
+
+.datepicker {
+    z-index: 10000;
 }
