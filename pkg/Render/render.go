@@ -1,6 +1,8 @@
 package render
 
 import (
+	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -8,66 +10,84 @@ import (
 
 	config "github.com/GitEagleY/BookingsWebApp/pkg/config"
 	"github.com/GitEagleY/BookingsWebApp/pkg/models"
+	"github.com/justinas/nosurf"
 )
 
-//var functions = template.FuncMap{}
+var functions = template.FuncMap{}
 
 var app *config.AppConfig
-var templateCache map[string]*template.Template
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData { //default data avalivable to every template
-	return td
-}
-func NewTemplates(a *config.AppConfig) { //template constructor
+// NewTemplates sets the config for the template package
+func NewTemplates(a *config.AppConfig) {
 	app = a
 }
-func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) error {
-	if app.Production { //if not in developing mode use templates each time from cache
-		templateCache = app.TemplateCache
-	} else { //or if in development mode use from disk
-		templateCache, _ = CacheTemplate()
-	}
 
-	templateToRender, ok := templateCache[templateName] //make template to render
-	if !ok {
-		log.Fatal(ok)
-	}
-	td = AddDefaultData(td) //adding deafult data availivable to every template
-
-	templateToRender.Execute(w, td) //render template
-	return nil
+// AddDefaultData adds data for all templates
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
+	return td
 }
-func CacheTemplate() (map[string]*template.Template, error) {
-	Cache := map[string]*template.Template{}
 
-	// get all of the files named *.page.tmpl from ./templates
+// RenderTemplate renders a template
+func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
+	var tc map[string]*template.Template
+
+	if app.UseCache {
+		// get the template cache from the app config
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
+	}
+
+	t, ok := tc[tmpl]
+	if !ok {
+		log.Fatal("Could not get template from template cache")
+	}
+
+	buf := new(bytes.Buffer)
+
+	td = AddDefaultData(td, r)
+
+	_ = t.Execute(buf, td)
+
+	_, err := buf.WriteTo(w)
+	if err != nil {
+		fmt.Println("error writing template to browser", err)
+	}
+
+}
+
+// CreateTemplateCache creates a template cache as a map
+func CreateTemplateCache() (map[string]*template.Template, error) {
+
+	myCache := map[string]*template.Template{}
+
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {
-		return Cache, err
+		return myCache, err
 	}
 
-	// range through all files ending with *.page.tmpl
 	for _, page := range pages {
-		name := filepath.Base(page)                            //take page file name
-		parsdTmplt, err := template.New(name).ParseFiles(page) //allocating template and create template by parsing page file
+		name := filepath.Base(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
-			return Cache, err
+			return myCache, err
 		}
-		// get all of the files named *.layout.tmpl from ./templates
+
 		matches, err := filepath.Glob("./templates/*.layout.tmpl")
 		if err != nil {
-			return Cache, err
+			return myCache, err
 		}
 
 		if len(matches) > 0 {
-			parsdTmplt, err = parsdTmplt.ParseGlob("./templates/*.layout.tmpl")
+			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
 			if err != nil {
-				return Cache, err
+				return myCache, err
 			}
 		}
 
-		Cache[name] = parsdTmplt
+		myCache[name] = ts
 	}
 
-	return Cache, nil
+	return myCache, nil
 }

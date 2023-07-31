@@ -2,14 +2,15 @@ package config
 
 import (
 	"html/template"
+	"log"
 
 	"github.com/alexedwards/scs/v2"
 )
 
-// holds app config
 type AppConfig struct {
+	UseCache      bool
 	TemplateCache map[string]*template.Template
-
-	Production bool //if yes ur in producton mode
-	Session    *scs.SessionManager
+	InfoLog       *log.Logger
+	InProduction  bool
+	Session       *scs.SessionManager
 }

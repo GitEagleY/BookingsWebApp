@@ -11,22 +11,24 @@ import (
 )
 
 func routes(app *config.AppConfig) http.Handler {
-	mx := chi.NewRouter()
-	mx.Use(middleware.Recoverer) //need so app doesnt fall because of some random error
-	mx.Use(NoSurf)               //CSRF attacs protection (just why not)
-	mx.Use(SessionLoad)          //save and load user session data
+	mux := chi.NewRouter()
 
-	mx.Get("/", handlers.Repo.Home) //make site & middleware work
-	mx.Get("/about", handlers.Repo.About)
-	mx.Get("/book_now", handlers.Repo.Book_now)
-	mx.Get("/contact", handlers.Repo.Contact)
-	mx.Get("/login", handlers.Repo.Login)
-	mx.Get("/make_reservation", handlers.Repo.Make_reservation)
-	mx.Get("/quarters", handlers.Repo.Quarters)
-	mx.Get("/register", handlers.Repo.Register)
-	mx.Get("/suite", handlers.Repo.Suite)
+	mux.Use(middleware.Recoverer)
+	mux.Use(NoSurf)
+	mux.Use(SessionLoad)
 
-	fileserver := http.FileServer(http.Dir("./static/"))
-	mx.Handle("/static/*", http.StripPrefix("/static", fileserver))
-	return mx //return setted up mixer to main
+	mux.Get("/", handlers.Repo.Home)
+	mux.Get("/about", handlers.Repo.About)
+	mux.Get("/generals-quarters", handlers.Repo.Generals)
+	mux.Get("/majors-suite", handlers.Repo.Majors)
+	mux.Get("/search-availability", handlers.Repo.Availability)
+	mux.Post("/search-availability", handlers.Repo.PostAvailability)
+	mux.Get("/contact", handlers.Repo.Contact)
+
+	mux.Get("/make-reservation", handlers.Repo.Reservation)
+
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
+	return mux
 }

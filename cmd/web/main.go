@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -12,40 +13,47 @@ import (
 	handlers "github.com/GitEagleY/BookingsWebApp/pkg/Handlers"
 )
 
-const portnum = ":8080"
+const portNumber = ":8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
 
+// main is the main function
 func main() {
+	// change this to true when in production
+	app.InProduction = false
 
-	app.Production = false
-	// /////////////////////SESSION////////////////////
-	session = scs.New()                            //declaring new session
-	session.Lifetime = 2 * time.Hour               //liftemi of a session
-	session.Cookie.Persist = false                 //will cookie exist after user leves page
-	session.Cookie.SameSite = http.SameSiteLaxMode //idk some of the site mods
-	session.Cookie.Secure = app.Production         //if in prodution than use https
-	app.Session = session                          //giving session to app data
+	// set up the session
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
 
-	tc, err := render.CacheTemplate() //creating template cache
+	app.Session = session
+
+	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
 	}
-	app.TemplateCache = tc //giving just created cache to app config
 
-	render.NewTemplates(&app) //giving app config to renders
+	app.TemplateCache = tc
+	app.UseCache = false
 
-	repo := handlers.NewRepo(&app) //making new repo
-	handlers.NewHandlers(repo)     //giving new just created repo to Handlers
+	repo := handlers.NewRepo(&app)
+	handlers.NewHandlers(repo)
 
-	srv := &http.Server{ //server
-		Addr:    portnum,
+	render.NewTemplates(&app)
+
+	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+
+	srv := &http.Server{
+		Addr:    portNumber,
 		Handler: routes(&app),
 	}
+
 	err = srv.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
