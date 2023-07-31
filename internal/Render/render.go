@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	config "github.com/GitEagleY/BookingsWebApp/pkg/config"
-	"github.com/GitEagleY/BookingsWebApp/pkg/models"
+	config "github.com/GitEagleY/BookingsWebApp/internal/config"
+	"github.com/GitEagleY/BookingsWebApp/internal/models"
 	"github.com/justinas/nosurf"
 )
 

@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	render "github.com/GitEagleY/BookingsWebApp/pkg/Render"
-	"github.com/GitEagleY/BookingsWebApp/pkg/config"
-	"github.com/GitEagleY/BookingsWebApp/pkg/models"
+	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
+	"github.com/GitEagleY/BookingsWebApp/internal/config"
+	"github.com/GitEagleY/BookingsWebApp/internal/models"
 )
 
 // Repo the repository used by the handlers

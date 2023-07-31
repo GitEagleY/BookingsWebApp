@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	handlers "github.com/GitEagleY/BookingsWebApp/pkg/Handlers"
-	"github.com/GitEagleY/BookingsWebApp/pkg/config"
+	handlers "github.com/GitEagleY/BookingsWebApp/internal/Handlers"
+	"github.com/GitEagleY/BookingsWebApp/internal/config"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

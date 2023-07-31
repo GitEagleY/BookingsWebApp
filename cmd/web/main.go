@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	render "github.com/GitEagleY/BookingsWebApp/pkg/Render"
-	"github.com/GitEagleY/BookingsWebApp/pkg/config"
+	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
+	"github.com/GitEagleY/BookingsWebApp/internal/config"
 	"github.com/alexedwards/scs/v2"
 
-	handlers "github.com/GitEagleY/BookingsWebApp/pkg/Handlers"
+	handlers "github.com/GitEagleY/BookingsWebApp/internal/Handlers"
 )
 
 const portNumber = ":8080"
