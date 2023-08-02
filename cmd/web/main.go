@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 
 	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
 	"github.com/GitEagleY/BookingsWebApp/internal/config"
+	"github.com/GitEagleY/BookingsWebApp/internal/models"
 	"github.com/alexedwards/scs/v2"
 
 	handlers "github.com/GitEagleY/BookingsWebApp/internal/Handlers"
@@ -20,6 +22,9 @@ var session *scs.SessionManager
 
 // main is the main function
 func main() {
+
+	gob.Register(models.Reservation{})
+
 	// change this to true when in production
 	app.InProduction = false
 
