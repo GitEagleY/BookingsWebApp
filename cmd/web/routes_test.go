@@ -15,6 +15,6 @@ func TestRoutes(t *testing.T) {
 	case *chi.Mux:
 		//ok
 	default:
-		t.Error(fmt.Sprintf(" MUX type is not http.Handler %T", v))
+		t.Error(fmt.Sprintf(" MUX type is not  *chi.Mux - its = %T", v))
 	}
 }

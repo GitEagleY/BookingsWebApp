@@ -14,6 +14,6 @@ func TestNosurf(t *testing.T) {
 	case http.Handler:
 		//ok
 	default:
-		t.Error(fmt.Sprintf("type is not http.Handler %T", v))
+		t.Error(fmt.Sprintf("type is not http.Handler it = %T", v))
 	}
 }
