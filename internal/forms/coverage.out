@@ -1,0 +1,18 @@
+mode: set
+github.com/GitEagleY/BookingsWebApp/internal/forms/errors.go:6.44,8.2 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/errors.go:11.42,13.18 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/errors.go:13.18,15.3 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/errors.go:16.2,16.14 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:18.33,23.2 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:25.42,26.31 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:26.31,28.37 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:28.37,30.4 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:35.39,37.13 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:37.13,40.3 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:41.2,41.13 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:44.29,46.2 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:49.57,51.23 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:51.23,54.3 2 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:55.2,55.13 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:58.38,59.40 1 1
+github.com/GitEagleY/BookingsWebApp/internal/forms/forms.go:59.40,61.3 1 1
