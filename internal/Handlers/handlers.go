@@ -9,6 +9,7 @@ import (
 	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
 	"github.com/GitEagleY/BookingsWebApp/internal/config"
 	"github.com/GitEagleY/BookingsWebApp/internal/forms"
+	"github.com/GitEagleY/BookingsWebApp/internal/helpers"
 	"github.com/GitEagleY/BookingsWebApp/internal/models"
 )
 
@@ -70,7 +71,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(w, err)
 		return
 	}
 	reservation := models.Reservation{
@@ -144,7 +145,8 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	}
 	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(w, err)
+		return
 	}
 	log.Println(string(out))
 	w.Header().Set("Content-type", "application/json")
@@ -155,7 +157,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		log.Println("Cannot get item from session")
+		m.App.ErrorLog.Println("Cant get error from session")
 		m.App.Session.Put(r.Context(), "error", "cant get resrvation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
