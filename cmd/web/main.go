@@ -10,6 +10,7 @@ import (
 
 	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
 	"github.com/GitEagleY/BookingsWebApp/internal/config"
+	"github.com/GitEagleY/BookingsWebApp/internal/driver"
 	"github.com/GitEagleY/BookingsWebApp/internal/helpers"
 	"github.com/GitEagleY/BookingsWebApp/internal/models"
 	"github.com/alexedwards/scs/v2"
@@ -27,10 +28,11 @@ var errorLog *log.Logger
 // main is the main function
 func main() {
 
-	err := run()
+	db, err := run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.SQL.Close()
 
 	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
 
@@ -45,7 +47,7 @@ func main() {
 	}
 }
 
-func run() error {
+func run() (*driver.DB, error) {
 	gob.Register(models.Reservation{})
 
 	// change this to true when in production
@@ -64,18 +66,26 @@ func run() error {
 	session.Cookie.Secure = app.InProduction
 
 	app.Session = session
-
+	// connect to database
+	log.Println("connection to database...")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user= password=")
+	if err != nil {
+		log.Fatal("Cannot connect to database!")
+	}
+	log.Println("connected")
+	defer db.SQL.Close()
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return nil, err
 	}
 
 	app.TemplateCache = tc
 	app.UseCache = false
 
-	repo := handlers.NewRepo(&app)
+	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 	render.NewTemplates(&app)
 	helpers.NewHelpers(&app)
-	return nil
+	return db, nil
 }

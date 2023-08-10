@@ -8,9 +8,12 @@ import (
 
 	render "github.com/GitEagleY/BookingsWebApp/internal/Render"
 	"github.com/GitEagleY/BookingsWebApp/internal/config"
+	"github.com/GitEagleY/BookingsWebApp/internal/driver"
 	"github.com/GitEagleY/BookingsWebApp/internal/forms"
 	"github.com/GitEagleY/BookingsWebApp/internal/helpers"
 	"github.com/GitEagleY/BookingsWebApp/internal/models"
+	"github.com/GitEagleY/BookingsWebApp/internal/repository"
+	"github.com/GitEagleY/BookingsWebApp/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -19,12 +22,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
@@ -35,8 +40,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+	m.DB.AllUsers()
 
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
