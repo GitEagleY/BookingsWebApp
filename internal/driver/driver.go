@@ -9,18 +9,21 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-// holds the database connection
+// DB holds the database connection.
 type DB struct {
 	SQL *sql.DB
 }
 
+// dbConn is a global instance of DB.
 var dbConn = &DB{}
 
-const maxOpenDbConn = 10
-const maxIdleDbConn = 5
-const maxDBLifetime = 5 * time.Minute
+const (
+	maxOpenDbConn = 10
+	maxIdleDbConn = 5
+	maxDBLifetime = 5 * time.Minute
+)
 
-// creates new database for the application
+// NewDatabase creates a new database connection for the application.
 func NewDatabase(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
@@ -32,19 +35,23 @@ func NewDatabase(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-// creates database pool for postgres
+// ConnectSQL establishes a database connection pool for PostgreSQL.
 func ConnectSQL(dsn string) (*DB, error) {
+	// Create a new database connection.
 	d, err := NewDatabase(dsn)
 	if err != nil {
 		panic(err)
 	}
 
+	// Set connection pool settings.
 	d.SetMaxOpenConns(maxOpenDbConn)
 	d.SetMaxIdleConns(maxIdleDbConn)
 	d.SetConnMaxLifetime(maxDBLifetime)
 
+	// Assign the database connection to the global dbConn instance.
 	dbConn.SQL = d
 
+	// Test the database connection.
 	err = testDB(d)
 	if err != nil {
 		return nil, err
@@ -52,7 +59,7 @@ func ConnectSQL(dsn string) (*DB, error) {
 	return dbConn, nil
 }
 
-// tryes to ping database
+// testDB attempts to ping the database to check if the connection is valid.
 func testDB(d *sql.DB) error {
 	err := d.Ping()
 	if err != nil {

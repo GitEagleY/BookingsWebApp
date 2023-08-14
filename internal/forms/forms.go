@@ -8,13 +8,13 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
-// Form creates a custom form struct, embeds a url.Values object
+// Form creates a custom form struct that embeds a url.Values object and holds validation errors.
 type Form struct {
 	url.Values
-	Errors errors
+	Errors errors // Custom errors map to store validation errors.
 }
 
-// New initializes a form struct
+// New initializes a new Form struct with provided data and an empty errors map.
 func New(data url.Values) *Form {
 	return &Form{
 		data,
@@ -22,7 +22,8 @@ func New(data url.Values) *Form {
 	}
 }
 
-func (f *Form) Requied(fields ...string) {
+// Required checks if specified form fields are not empty.
+func (f *Form) Required(fields ...string) {
 	for _, field := range fields {
 		value := f.Get(field)
 		if strings.TrimSpace(value) == "" {
@@ -31,7 +32,7 @@ func (f *Form) Requied(fields ...string) {
 	}
 }
 
-// checks if form field is in post and not empty
+// Has checks if a form field exists in the post data and is not empty.
 func (f *Form) Has(field string) bool {
 	x := f.Get(field)
 	if x == "" {
@@ -41,25 +42,26 @@ func (f *Form) Has(field string) bool {
 	return true
 }
 
+// Valid checks if the form has no validation errors.
 func (f *Form) Valid() bool {
 	return len(f.Errors) == 0
 }
 
-// checks for string minimum length
+// MinLength checks if a string form field meets the minimum length requirement.
 func (f *Form) MinLength(field string, length int) bool {
 	x := f.Get(field)
-	if len((x)) < length {
+	if len(x) < length {
 		f.Errors.Add(field, fmt.Sprintf("This field must be at least %d characters long", length))
 		return false
 	}
 	return true
 }
 
+// IsEmail checks if a form field contains a valid email address using the govalidator package.
 func (f *Form) IsEmail(field string) {
 	if !govalidator.IsEmail(f.Get(field)) {
-		f.Errors.Add(field, "invalid email address")
+		f.Errors.Add(field, "Invalid email address")
 	}
-
 }
 
 //my email validator

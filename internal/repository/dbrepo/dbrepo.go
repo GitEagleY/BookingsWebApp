@@ -7,15 +7,16 @@ import (
 	repository "github.com/GitEagleY/BookingsWebApp/internal/repository"
 )
 
+// postgresDBRepo is a struct that represents a PostgreSQL database repository.
 type postgresDBRepo struct {
-	App *config.AppConfig
-	DB  *sql.DB
+	App *config.AppConfig // App contains the application's configuration settings.
+	DB  *sql.DB           // DB is the PostgreSQL database connection.
 }
 
+// NewPostgresRepo creates and returns a new instance of postgresDBRepo.
 func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {
 	return &postgresDBRepo{
-		App: a,
-		DB:  conn,
+		App: a,    // Initialize the App field with the provided AppConfig.
+		DB:  conn, // Initialize the DB field with the provided PostgreSQL database connection.
 	}
-
 }

@@ -68,7 +68,7 @@ ALTER SEQUENCE public.reservations_id_seq OWNED BY public.reservations.id;
 
 CREATE TABLE public.restrictions (
     id integer NOT NULL,
-    reservation_name character varying(255) DEFAULT ''::character varying NOT NULL,
+    restriction_name character varying(255) DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -107,8 +107,8 @@ CREATE TABLE public.room_restrictions (
     start_date date NOT NULL,
     end_date date NOT NULL,
     room_id integer NOT NULL,
+    reservation_id integer,
     restriction_id integer NOT NULL,
-    reservation_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -370,7 +370,7 @@ ALTER TABLE ONLY public.reservations
 --
 
 ALTER TABLE ONLY public.room_restrictions
-    ADD CONSTRAINT room_restrictions_reservations_id_fk FOREIGN KEY (restriction_id) REFERENCES public.reservations(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT room_restrictions_reservations_id_fk FOREIGN KEY (reservation_id) REFERENCES public.reservations(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

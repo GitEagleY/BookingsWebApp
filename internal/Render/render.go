@@ -14,28 +14,30 @@ import (
 	"github.com/justinas/nosurf"
 )
 
-var functions = template.FuncMap{}
+var functions = template.FuncMap{} // Custom template functions.
 
-var app *config.AppConfig
+var app *config.AppConfig // Holds the application configuration.
 
-var pathToTemplates = "./templates"
+var pathToTemplates = "./templates" // Path to the template files.
 
-// sets the config for the template package
+// NewRenderer sets the configuration for the template package.
 func NewRenderer(a *config.AppConfig) {
-	app = a
+	app = a // Assign the provided AppConfig to the app variable for access in template functions.
 }
 
-// AddDefaultData adds data for all templates
+// AddDefaultData adds common data to the template data.
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	// Retrieve flash messages from the session and add them to the template data.
 	td.Flash = app.Session.PopString(r.Context(), "flash")
 	td.Warning = app.Session.PopString(r.Context(), "warning")
 	td.Error = app.Session.PopString(r.Context(), "error")
 
+	// Add CSRF token to the template data.
 	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
-// RenderTemplate renders a template
+// Template renders a template
 func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
 	var tc map[string]*template.Template
 

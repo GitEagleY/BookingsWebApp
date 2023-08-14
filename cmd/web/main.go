@@ -58,30 +58,32 @@ func run() (*driver.DB, error) {
 	infoLog = log.New(os.Stdout, "INFO:\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 
-	errorLog = log.New(os.Stdout, "ERROR:\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog = log.New(os.Stdout, "-----------------ERROR:---------------------\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
+
 	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	session.Cookie.Secure = app.InProduction
-
 	app.Session = session
+
 	// connect to database
 	log.Println("connection to database...")
-	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user= password=")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=")
 	if err != nil {
 		log.Fatal("Cannot connect to database!")
 	}
 	log.Println("connected")
-	defer db.SQL.Close()
+	//defer db.SQL.Close()
+
+	//create template cache
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
 		return nil, err
 	}
-
 	app.TemplateCache = tc
 	app.UseCache = false
 

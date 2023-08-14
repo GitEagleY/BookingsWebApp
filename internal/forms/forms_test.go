@@ -17,7 +17,7 @@ func TestForm_Valid(t *testing.T) {
 func TestForm_Required(t *testing.T) {
 	r := httptest.NewRequest("POST", "/something", nil)
 	form := New(r.PostForm)
-	form.Requied("a", "b", "c")
+	form.Required("a", "b", "c")
 	if form.Valid() {
 		t.Error("shows valid when requred fileds missing")
 	}
@@ -28,7 +28,7 @@ func TestForm_Required(t *testing.T) {
 	r = httptest.NewRequest("POST", "/something", nil)
 	r.PostForm = postedData
 	form = New(r.PostForm)
-	form.Requied("a", "b", "c")
+	form.Required("a", "b", "c")
 	if !form.Valid() {
 		t.Error("shows that doesnt have required filed but it does")
 	}
