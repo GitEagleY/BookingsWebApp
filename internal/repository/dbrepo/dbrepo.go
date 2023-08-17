@@ -24,6 +24,7 @@ func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo 
 		DB:  conn, // Initialize the DB field with the provided PostgreSQL database connection.
 	}
 }
+
 func NewTestingRepo(a *config.AppConfig) repository.DatabaseRepo {
 	return &testDBRepo{
 		App: a, // Initialize the App field with the provided AppConfig.

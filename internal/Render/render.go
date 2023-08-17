@@ -33,6 +33,10 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 	td.Error = app.Session.PopString(r.Context(), "error")
 
 	// Add CSRF token to the template data.
+
+	if app.Session.Exists(r.Context(), "user_id") {
+		td.IsAuthenticated = 1
+	}
 	td.CSRFToken = nosurf.Token(r)
 	return td
 }
