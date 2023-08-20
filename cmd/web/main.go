@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/gob"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -60,8 +61,39 @@ func run() (*driver.DB, error) {
 	mailChan := make(chan models.MailData)
 	app.MailChan = mailChan
 
+	inProduction := flag.Bool("production", true, "Application is in production")
+	useCache := *flag.Bool("cache", true, "Use template cache")
+	dbHost := flag.String("dbhost", "localhost", "Database host")
+	dbName := flag.String("dbname", "", "Database name")
+	dbUser := flag.String("dbuser", "", "Database user")
+	dbPass := flag.String("dbpass", "", "Database password")
+	dbPort := flag.String("dbport", "", "Database port")
+	dbSSL := flag.String("dbssl", "disable", "Database ssl settings( disable, prefer, require)")
+
+	flag.Parse()
+
+	// Check if any flags are provided
+	if flag.NFlag() == 0 {
+		fmt.Println("\nNo flags provided. Example usage:")
+		fmt.Printf("go build -o webappname cmd/web/*.go -production=false -cache=false -dbhost=db.example.com -dbname=mydb -dbuser=user -dbpass=pass -dbport=5432 -dbssl=require && ./webappname\n")
+		os.Exit(1)
+	}
+	if *dbName == "" || *dbUser == "" {
+		fmt.Sprintf("Missing required flags dbName and dbUser")
+		os.Exit(1)
+	} else {
+		fmt.Println("Application Configuration:")
+		fmt.Printf("Production Mode: %v\n", *inProduction)
+		fmt.Printf("Use Cache: %t\n", useCache)
+		fmt.Printf("Database Host: %s\n", *dbHost)
+		fmt.Printf("Database Name: %s\n", *dbName)
+		fmt.Printf("Database User: %s\n", *dbUser)
+		fmt.Printf("Database Port: %s\n", *dbPort)
+		fmt.Printf("Database SSL Settings: %s\n", *dbSSL)
+	}
+
 	// change this to true when in production
-	app.InProduction = false
+	app.InProduction = *inProduction
 
 	infoLog = log.New(os.Stdout, "INFO:\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
@@ -79,7 +111,8 @@ func run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("connection to database...")
-	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=")
+	connectString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPass, *dbSSL)
+	db, err := driver.ConnectSQL(connectString)
 	if err != nil {
 		log.Fatal("Cannot connect to database!")
 	}
@@ -93,7 +126,7 @@ func run() (*driver.DB, error) {
 		return nil, err
 	}
 	app.TemplateCache = tc
-	app.UseCache = false
+	app.UseCache = *&useCache
 
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
