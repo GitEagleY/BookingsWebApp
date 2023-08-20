@@ -41,6 +41,7 @@ func main() {
 
 	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
 
+	fmt.Println("admin user: email=admin@email.com password=admin")
 	srv := &http.Server{
 		Addr:    portNumber,
 		Handler: routes(&app),
