@@ -99,16 +99,15 @@ form {
 }
 
 .my-footer {
-    height: 5em;
-    background-color: #163b65;
-    margin-top: 1.5em;
-    padding: 1em;
-    color: white;
+    height: 25em;
+
+    margin-top: 15em;
+    padding: 15em;
+    color: rgb(43, 255, 0);
     font-size: 80%;
-    /* Position is removed from the first block to give higher priority to the second block */
-    /* position: fixed;
+    position: fixed;
     width: 100%;
-    bottom: 0; */
+    bottom: auto;
 }
 
 .room-image {

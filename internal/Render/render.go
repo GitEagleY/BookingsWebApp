@@ -8,13 +8,19 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	config "github.com/GitEagleY/BookingsWebApp/internal/config"
 	"github.com/GitEagleY/BookingsWebApp/internal/models"
 	"github.com/justinas/nosurf"
 )
 
-var functions = template.FuncMap{} // Custom template functions.
+var functions = template.FuncMap{
+	"humanDate":  HumanDate,
+	"formatDate": FormatDate,
+	"iterate":    Iterate,
+	"add":        Add,
+} // Custom template functions.
 
 var app *config.AppConfig // Holds the application configuration.
 
@@ -23,6 +29,28 @@ var pathToTemplates = "./templates" // Path to the template files.
 // NewRenderer sets the configuration for the template package.
 func NewRenderer(a *config.AppConfig) {
 	app = a // Assign the provided AppConfig to the app variable for access in template functions.
+}
+
+func HumanDate(t time.Time) string {
+	return t.Format("2006-01-02")
+}
+
+func FormatDate(t time.Time, f string) string {
+	return t.Format(f)
+}
+
+func Iterate(count int) []int {
+	var i int
+	var items []int
+	for i = 0; i < count; i++ {
+		items = append(items, i)
+
+	}
+	return items
+}
+
+func Add(a, b int) int {
+	return a + b
 }
 
 // AddDefaultData adds common data to the template data.
