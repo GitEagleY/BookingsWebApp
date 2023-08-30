@@ -2,6 +2,9 @@
     <h1><strong>Bookings Web Application</strong></h1>
 </div>
 
+# If you just want to see the app in action, you can see screenshots [here](https://github.com/GitEagleY/BookingsWebApp/tree/main/Sreenshots)
+
+
 ---
 
 ## 📋 Prerequisites
@@ -84,7 +87,7 @@ To successfully build and launch the application, please follow these steps:
 
 6.  You are now ready to build and run the application. Use the following command based on your operating system:
 
-    For \*NIX:
+    For *NIX:
 
         go build -o bookings cmd/web/*.go
         ./bookings
