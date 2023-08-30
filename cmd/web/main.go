@@ -76,11 +76,11 @@ func run() (*driver.DB, error) {
 	// Check if any flags are provided
 	if flag.NFlag() == 0 {
 		fmt.Println("\nNo flags provided. Example usage:")
-		fmt.Printf("go build -o webappname cmd/web/*.go -production=false -cache=false -dbhost=db.example.com -dbname=mydb -dbuser=user -dbpass=pass -dbport=5432 -dbssl=require && ./webappname\n")
+		fmt.Printf("./webappname -production=false -cache=false -dbname=mydb -dbuser=user -dbpass=pass -dbport=8080 -dbssl=require\n")
 		os.Exit(1)
 	}
 	if *dbName == "" || *dbUser == "" {
-		fmt.Sprintf("Missing required flags dbName and dbUser")
+		fmt.Println("Missing required flags dbName and dbUser")
 		os.Exit(1)
 	} else {
 		fmt.Println("Application Configuration:")

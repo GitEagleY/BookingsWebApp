@@ -3,3 +3,4 @@ bookings
 database.yml
 coverage.out
 .gitignore
+./backup
