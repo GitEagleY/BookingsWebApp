@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 📋 Prerequisites
 
 Before building and running the application, ensure you have the following in place:
@@ -12,7 +11,7 @@ Before building and running the application, ensure you have the following in pl
 - **Go**: The Go programming language is required for compiling and running the app.
 - **PostgreSQL**: Make sure you have a PostgreSQL server up and running with a database.
 - **Soda CLI**.
-
+- **Mail server**: Recommended to use [mailhog](https://github.com/mailhog/MailHog).
 
 ---
 
@@ -24,18 +23,15 @@ Before building and running the application, ensure you have the following in pl
 
 ### For Ubuntu/Debian:
 
-1. Open a terminal.
+1.  Open a terminal.
 
-2. Update the package list and install PostgreSQL:
-  
-  
+2.  Update the package list and install PostgreSQL:
+
         sudo apt update
         sudo apt install postgresql postgresql-contrib
 
+3.  Start and enable the PostgreSQL service:
 
-3. Start and enable the PostgreSQL service:
-
-  
         sudo systemctl start postgresql
         sudo systemctl enable postgresql
 
@@ -46,18 +42,15 @@ Before building and running the application, ensure you have the following in pl
 
 ### For macOS (using Homebrew):
 
-1. Open a terminal.
+1.  Open a terminal.
 
-2. Install PostgreSQL using Homebrew:
-
+2.  Install PostgreSQL using Homebrew:
 
         brew install postgresql
 
-
-3. Start and enable the PostgreSQL service:
+3.  Start and enable the PostgreSQL service:
 
         brew services start postgresql
-
 
 ### For Windows:
 
@@ -65,10 +58,7 @@ Before building and running the application, ensure you have the following in pl
 
 2. Run the installer and follow the on-screen instructions to complete the installation.
 
-
-
 ### For more detailed instructions see [PostgreSQL official website](https://www.postgresql.org/).
-
 
 ---
 
@@ -76,38 +66,35 @@ Before building and running the application, ensure you have the following in pl
 
 To successfully build and launch the application, please follow these steps:
 
-1. Begin by cloning or downloading the source code from the GitHub repository.
+1.  Begin by cloning or downloading the source code from the GitHub repository.
 
-2. Open your terminal or command prompt and navigate to the project directory.
+2.  Open your terminal or command prompt and navigate to the project directory.
 
-3. Execute the following command to conveniently download and install the necessary Go library dependencies:
-
+3.  Execute the following command to conveniently download and install the necessary Go library dependencies:
 
         go mod download
 
-4. To manage database migrations, you'll need Soda CLI installed. You can install it using the following command:
-
+4.  To manage database migrations, you'll need Soda CLI installed. You can install it using the following command:
 
         go install github.com/gobuffalo/pop/v5/soda@latest
 
-
-5. Perform database migrations using Soda CLI by running:
-
+5.  Perform database migrations using Soda CLI by running:
 
         soda reset
 
+6.  You are now ready to build and run the application. Use the following command based on your operating system:
 
-6. You are now ready to build and run the application. Use the following command based on your operating system:
+    For \*NIX:
 
-    For *NIX:
-
-        go build -o bookings cmd/web/*.go && ./bookings
-
+        go build -o bookings cmd/web/*.go
+        ./bookings
 
     For Windows:
 
-        go build -o bookings.exe cmd/web/*.go && ./bookings.exe
+        go build -o bookings.exe cmd/web/*.go
+        ./bookings.exe
 
+For mail sending - make sure you have a mail server running.
 
 ---
 
